@@ -2,8 +2,8 @@
 export const HooksApp = () => {
 
   return (
-    <div>
-        <h1>Hola mi dey!</h1>
+    <div className="bg-gradient">
+        <h1 className="text-3xl font-bold underline">Hola mi dey!</h1>
     </div>
   )
 }
