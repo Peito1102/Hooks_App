@@ -1,4 +1,4 @@
-/* interface Todo {
+interface Todo {
   id: number;
   text: string;
   completed: boolean;
@@ -42,20 +42,22 @@ export const taskReducer = (state: TaskState, action: TaskAction ): TaskState =>
       return {
         ...state,
         todos: updateTodos,
-        pending : updateTodos ? state.pending - 1 : state.pending + 1,
-        completed : updateTodos ? state.completed + 1 : state.completed - 1,
+        pending : updateTodos.filter( todo => !todo.completed ).length,
+        completed : updateTodos.filter( todo => todo.completed ).length,
       };
     }
-    case 'DELETE_TODO':
+    case 'DELETE_TODO': {
+      const currentTodos = state.todos.filter( todo => todo.id !== action.payload );
+
       return {
         ...state,
-        todos: state.todos.filter( todo => todo.id !== action.payload ),
-        length : state.length - 1,
-        completed : state.todos.find( todo => todo.id === action.payload )?.completed ? state.completed - 1 : state.completed,
-        pending : state.todos.find( todo => todo.id === action.payload )?.completed ? state.pending : state.pending - 1,
+        todos: currentTodos,
+        length : currentTodos.length,
+        completed : currentTodos.filter( todo => todo.completed ).length,
+        pending : currentTodos.filter( todo => !todo.completed ).length,
       };
+    }
     default:
       return state;
   }
 }
- */
