@@ -14,7 +14,7 @@ createRoot(document.getElementById('root')!).render(
     {/*<HooksApp/>*/}
     {/*<TrafficLight/>*/}
     {/*<TrafficLightWithEffect/>*/}
-    {/*<TrafficLightWithHook/>*/}
+    {/*<TrafficLightWithHook/>
     {/*<PokemonPage/>*/}
     {/*<FocusScreen/>*/}
     <TasksApp />
