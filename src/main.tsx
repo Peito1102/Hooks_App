@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import { MemoHooks } from './06-memos/MemoHooks'
+import MemoHooks  from './06-memos/MemoHooks';
 //import { ScrambleWords } from './05-useReducer/ScrambleWords'
 // import { TasksApp } from './05-useReducer/TasksApp '
 //import { FocusScreen } from './04-useRef/FocusScreen'
