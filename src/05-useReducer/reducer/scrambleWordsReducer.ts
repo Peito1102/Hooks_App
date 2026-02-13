@@ -1,4 +1,5 @@
 import { GAME_WORDS, type ScrumbleAction, type ScrumbleState } from "../interfaces/ScrumbleState";
+import confetti from 'canvas-confetti';
 
 // Esta función mezcla el arreglo para que siempre sea aleatorio
 const shuffleArray = (array: string[]) => {
@@ -50,6 +51,11 @@ export const scrambleWordsReducer = (state: ScrumbleState, action: ScrumbleActio
                 };
             }
             const nextWord = state.words[1] || '';
+            confetti({
+                particleCount: 100,
+                spread: 120,
+                origin: { y: 0.6 }
+            });
             return {
                 ...state,
                 points: state.points + 1,
