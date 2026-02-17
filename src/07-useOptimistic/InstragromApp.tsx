@@ -1,4 +1,5 @@
 import { useOptimistic, useState, useTransition } from 'react';
+import { toast } from 'sonner'
 
 interface Comment {
   id: number;
@@ -11,6 +12,8 @@ let lastId = 2;
 export const InstagromApp = () => {
 
   const [isPending, startTransition] = useTransition();
+
+  const [inputValue, setInputValue] = useState('');
 
   const [comments, setComments] = useState<Comment[]>([
     { id: 1, text: '¡Gran foto!' },
@@ -27,19 +30,38 @@ export const InstagromApp = () => {
     }
   );
 
-  const handleAddComment = async (formData: FormData) => {
-    const messageText = formData.get('post-message') as string;
+  const handleAddComment = async () => {
+    const textToSend = inputValue;
+    if (!textToSend.trim()) return;
 
-    addOptimisticComment(messageText);
+    setInputValue('');
+
+    addOptimisticComment(textToSend);
 
     startTransition( async () => {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+    /*
     console.log('Comentario enviado al servidor');
 
     setComments((prevComments) => [
       ...prevComments,
       { id: Date.now(), text: messageText },
-    ]);
+    ]); */
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setComments(prev => [...prev, { id: lastId, text: inputValue }]);
+    } catch (e) {
+      toast('Error al agregar el comentario', {
+      description: 'Intente nuevamente' + e,
+      duration: 5_000,
+      position: 'top-right',
+      action: {
+        label: 'Cerrar',
+        onClick: () => toast.dismiss()
+      }
+    })
+    }
+
     })
   
   };
@@ -75,7 +97,10 @@ export const InstagromApp = () => {
 
       {/* Formulario de comentarios */}
       <form
-        action={handleAddComment}
+        onSubmit={e => {
+          e.preventDefault();
+          handleAddComment();
+        }}
         className="flex flex-col items-center justify-center bg-gray-300 w-[500px] rounded-b-3xl p-4"
       >
         <input
@@ -84,6 +109,8 @@ export const InstagromApp = () => {
           placeholder="Escribe un comentario"
           required
           className="w-full p-2 rounded-md mb-2 text-black bg-white"
+          value={inputValue}
+          onChange={e => setInputValue(e.target.value)}
         />
         <button
           type="submit"
